@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .btn-dashboard {
+            width: 100%;
+            height: 150px;
+            font-size: 20px;
+            margin-bottom: 15px;
+            background-color: #007bff;
+            border-color: #007bff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-dashboard:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-text {
+            color: #fff;
+        }
+        .dashboard-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="dashboard-heading">Dashboard</h2>
+        <div class="row">
+            <div class="col-md-6 col-lg-4">
+                <a href="register_customer.php" class="btn btn-dashboard">
+                    <div class="btn-text">Add Customer</div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <a href="update_customer.php" class="btn btn-dashboard">
+                    <div class="btn-text">Manage Customers</div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <a href="register_item.php" class="btn btn-dashboard">
+                    <div class="btn-text">Add Item</div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <a href="update_item.php" class="btn btn-dashboard">
+                    <div class="btn-text">Manage Items</div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <a href="invoice_report.php" class="btn btn-dashboard">
+                    <div class="btn-text">Get Invoice Report</div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <a href="invoice_item_report.php" class="btn btn-dashboard">
+                    <div class="btn-text">Get Invoice Item Report</div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <a href="item_report.php" class="btn btn-dashboard">
+                    <div class="btn-text">Get Item Report</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

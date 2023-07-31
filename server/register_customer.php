@@ -70,6 +70,11 @@ $customers = getCustomers();
     </style>
 </head>
 <body>
+             <div class="col-md-6 col-lg-4">
+                <a href="dashboard.html" class="btn btn-dashboard">
+                    <div class="btn-text">Home</div>
+                </a>
+             </div>
     <div class="container mt-5">
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="mb-4">
             <h2 class="text-center">Customer Registration</h2>

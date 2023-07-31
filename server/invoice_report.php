@@ -17,6 +17,11 @@ $itemReport = getItemReport();
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<div class="col-md-6 col-lg-4">
+                <a href="dashboard.html" class="btn btn-dashboard">
+                    <div class="btn-text">Home</div>
+                </a>
+             </div>
     <div class="container mt-5">
         <h2>Invoice Report</h2>
         <form method="post" action="invoice_report.php" class="mb-4">

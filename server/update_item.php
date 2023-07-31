@@ -1,6 +1,9 @@
 <?php
 include "functions.php";
 
+$categories = getCategories();
+$subcategories = getSubcategories();
+
 // Handle form submission for updating item
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_item"])) {
     $itemId = $_POST["id"];
@@ -69,6 +72,11 @@ $items = getItems();
     </style>
 </head>
 <body>
+<div class="col-md-6 col-lg-4">
+                <a href="dashboard.html" class="btn btn-dashboard">
+                    <div class="btn-text">Home</div>
+                </a>
+             </div>
     <div class="container mt-5">
         <!-- Table to display list of items -->
         <table class="table table-bordered">
@@ -121,11 +129,25 @@ $items = getItems();
             </div>
             <div class="form-group">
                 <label>Item Category:</label>
-                <input type="text" name="item_category" id="item_category" class="form-control" required>
+                <select class="form-control" name="item_category" required>
+                    <option value="">Select Category</option>
+                    <?php
+                    foreach ($categories as $categoryId => $categoryName) {
+                        echo "<option value='" . $categoryId . "'>" . $categoryName . "</option>";
+                    }
+                    ?>
+                </select>
             </div>
             <div class="form-group">
                 <label>Item Sub Category:</label>
-                <input type="text" name="item_subcategory" id="item_subcategory" class="form-control" required>
+                <select class="form-control" name="item_subcategory" required>
+                    <option value="">Select Sub Category</option>
+                    <?php
+                    foreach ($subcategories as $subcategoryId => $subcategoryName) {
+                        echo "<option value='" . $subcategoryId . "'>" . $subcategoryName . "</option>";
+                    }
+                    ?>
+                </select>
             </div>
             <div class="form-group">
                 <label>Quantity:</label>

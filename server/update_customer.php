@@ -41,6 +41,11 @@ $customers = getCustomers();
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<div class="col-md-6 col-lg-4">
+                <a href="dashboard.html" class="btn btn-dashboard">
+                    <div class="btn-text">Home</div>
+                </a>
+             </div>
         <!-- Display list of registered customers -->
         <h2>Registered Customers</h2>
         <table class="table">
