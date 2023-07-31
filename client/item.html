@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple ERP - Item Registration</title>
+    <!-- Include Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Item Registration</h2>
+        <form id="itemForm" novalidate>
+            <div class="form-group">
+                <label>Item Code:</label>
+                <input type="text" class="form-control" name="item_code" required>
+            </div>
+            <div class="form-group">
+                <label>Item Name:</label>
+                <input type="text" class="form-control" name="item_name" required>
+            </div>
+            <div class="form-group">
+                <label>Item Category:</label>
+                <select class="form-control" name="item_category" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <?php
+                    include "connection.php"; 
+
+                    $sql = "SELECT DISTINCT item_category FROM item";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<option value="' . $row['item_category'] . '">' . $row['item_category'] . '</option>';
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Item Sub Category:</label>
+                <select class="form-control" name="item_sub_category">
+                    <option value="" disabled selected>Select Sub Category</option>
+                    <?php
+                    include "connection.php";
+                    
+                    $sql = "SELECT DISTINCT item_subcategory FROM item";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<option value="' . $row['item_subcategory'] . '">' . $row['item_subcategory'] . '</option>';
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Quantity:</label>
+                <input type="number" class="form-control" name="quantity" required>
+            </div>
+            <div class="form-group">
+                <label>Unit Price:</label>
+                <input type="number" step="0.01" class="form-control" name="unit_price" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Register Item</button>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery links -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Function to validate the item registration form
+        function validateItemForm() {
+            const form = document.getElementById('itemForm');
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }
+
+        // Call the validation function when the form is submitted
+        document.getElementById('itemForm').addEventListener('submit', validateItemForm);
+    </script>
+</body>
+</html>
