@@ -171,7 +171,7 @@ $items = getItems();
             $("#item_id").val(itemId);
             $("#item_code").val(itemCode);
             $("#item_name").val(itemName);
-            $("#item_category").val(itemCategory);
+            $("#item_category").val(itemCategory); // Set the selected category
             $("#item_subcategory").val(itemSubCategory);
             $("#quantity").val(quantity);
             $("#unit_price").val(unitPrice);
