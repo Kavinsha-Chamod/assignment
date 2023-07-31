@@ -1,13 +1,13 @@
 <?php
 include "connection.php";
 
-function insertCustomer($title, $firstName, $middleName, $lastName, $contactNumber, $district) {
+function insertCustomer($title, $firstName,  $lastName, $contactNumber, $district) {
     global $conn;
-    $sql = "INSERT INTO customer (title, first_name, middle_name, last_name, contact_no, district)
-            VALUES ('$title', '$firstName', '$middleName', '$lastName', '$contactNumber', '$district')";
+    $sql = "INSERT INTO customer (title, first_name, last_name, contact_no, district)
+            VALUES ('$title', '$firstName',  '$lastName', '$contactNumber', '$district')";
     return $conn->query($sql);
 }
-
+//===========================================================================================================
 function insertItem($itemCode, $itemName, $itemCategory, $itemSubCategory, $quantity, $unitPrice) {
     global $conn;
     $sql = "INSERT INTO item (item_code, item_name, item_category, item_subcategory, quantity, unit_price)
@@ -17,25 +17,40 @@ function insertItem($itemCode, $itemName, $itemCategory, $itemSubCategory, $quan
 }
 
 // Similar functions for updating and deleting customers and items
+function updateCustomer($customerId, $title, $firstName, $middleName, $lastName, $contactNumber, $district)
+{
+    // Assuming you have already established a database connection using PDO or MySQLi
+    $pdo = new PDO("mysql:host=localhost;dbname=assignment", "root", "root");
 
-function updateCustomer($customerId, $title, $firstName, $middleName, $lastName, $contactNumber, $district) {
-  global $conn;
-  $sql = "UPDATE customer
-          SET title = '$title', 
-              first_name = '$firstName', 
-              middle_name = '$middleName',
-              last_name = '$lastName', 
-              contact_no = '$contactNumber', 
-              district = '$district'
-          WHERE id = $customerId";
+    // Prepare the SQL statement with placeholders to avoid SQL injection
+    $sql = "UPDATE customer SET title = :title, first_name = :first_name, last_name = :last_name, middle_name = :middle_name, 
+    contact_no = :contact_no, district = :district WHERE id = :customer_id";
+    $stmt = $pdo->prepare($sql);
 
-  return $conn->query($sql);
+    // Bind the parameters to the prepared statement
+    $stmt->bindParam(":title", $title, PDO::PARAM_STR);
+    $stmt->bindParam(":first_name", $firstName, PDO::PARAM_STR);
+    $stmt->bindParam(":middle_name", $middleName, PDO::PARAM_STR);
+    $stmt->bindParam(":last_name", $lastName, PDO::PARAM_STR);
+    $stmt->bindParam(":contact_no", $contactNumber, PDO::PARAM_STR);
+    $stmt->bindParam(":district", $district, PDO::PARAM_STR);
+    $stmt->bindParam(":customer_id", $customerId, PDO::PARAM_INT);
+
+    // Execute the prepared statement
+    try {
+        $stmt->execute();
+        return true; // Return true if the update is successful
+    } catch (PDOException $e) {
+        // Handle any errors that occur during the query execution
+        error_log("Error updating customer: " . $e->getMessage());
+        return false; // Return false if the update fails
+    }
+    
 }
-
 function deleteCustomer($customerId) {
   global $conn;
   $sql = "DELETE FROM customer WHERE id = $customerId";
-
+ 
   return $conn->query($sql);
 }
 
@@ -92,17 +107,48 @@ function getItems() {
 
     return $item;
 }
+function getCategories()
+{
+    global $conn;
+    $sql = "SELECT id,category FROM item_category";
+    $result = $conn->query($sql);
 
+    $categories = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $categories[$row['id']] = $row['id'];
+        }
+    }
+
+    return $categories;
+}
+
+function getSubcategories()
+{
+    global $conn; 
+
+    $sql = "SELECT id,sub_category FROM item_subcategory";
+    $result = $conn->query($sql);
+
+    $subcategories = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $subcategories[$row['id']] = $row['id'];
+        }
+    }
+    return $subcategories;
+}
+//===========================================================================================================
 // Function to get invoice report
 function getInvoiceReport($startDate, $endDate) {
   global $conn;
-  $sql = "SELECT i.invoice_number, i.invoice_date, c.first_name, c.last_name, c.district,
-                 COUNT(ii.item_id) AS item_count, SUM(ii.quantity * ii.unit_price) AS invoice_amount
+  $sql = "SELECT i.invoice_no, i.date, c.first_name, c.last_name, c.district,
+                 COUNT(im.id) AS item_count, SUM(im.quantity * im.unit_price) AS invoice_amount
           FROM invoice i
           INNER JOIN customer c ON i.id = c.id
-          INNER JOIN invoice_items ii ON i.id = ii.id
-          WHERE i.invoice_date BETWEEN '$startDate' AND '$endDate'
-          GROUP BY i.invoice_id";
+          INNER JOIN invoice_master im ON i.id = im.id
+          WHERE i.date BETWEEN '$startDate' AND '$endDate'
+          GROUP BY i.id";
 
   $result = $conn->query($sql);
   $invoiceReport = array();
@@ -118,12 +164,12 @@ function getInvoiceReport($startDate, $endDate) {
 // Function to get invoice item report
 function getInvoiceItemReport($startDate, $endDate) {
   global $conn;
-  $sql = "SELECT i.invoice_number, i.invoice_date, c.first_name, c.last_name,
+  $sql = "SELECT i.invoice_no, i.date, c.first_name, c.last_name,
                  ii.item_name, ii.item_code, ii.item_category, ii.unit_price
           FROM invoice i
           INNER JOIN customer c ON i.id = c.id
-          INNER JOIN invoice_master     ii ON i.id = ii.id
-          WHERE i.invoice_date BETWEEN '$startDate' AND '$endDate'";
+          INNER JOIN item     ii ON i.id = ii.id
+          WHERE i.date BETWEEN '$startDate' AND '$endDate'";
 
   $result = $conn->query($sql);
   $invoiceItemReport = array();
@@ -153,24 +199,4 @@ function getItemReport() {
 
   return $itemReport;
 }
-function getCustomerById($customerId)
-{
-    // Replace the following lines with your actual database query to fetch the customer by ID
-    // Make sure to use prepared statements to prevent SQL injection
-    $pdo = new PDO("mysql:host=localhost;dbname=assignmnet", "root", "root");
-    $sql = "SELECT * FROM customer WHERE id = customer_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam("customer_id", $customerId, PDO::PARAM_INT);
-    $stmt->execute();
-
-    // Fetch the customer data as an associative array
-    $customer = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Return the customer data or null if not found
-    return $customer ? $customer : null;
-}
-
-
-
-
 ?>
