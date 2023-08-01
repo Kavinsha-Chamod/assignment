@@ -32,6 +32,8 @@ Usage
                Access http://localhost/assignment/server/invoice_report.php to generate the Invoice Report.
                Access http://localhost/assignment/server/invoice_item_report.php to generate the Invoice Item Report.
                Access http://localhost/assignment/server/item_report.php to generate the Item Report.
-			   
+
+I just created a Dashboard so I can navigate the above tasks in one page without the URL. So to access that you can use : http://localhost/assignment/server/dashboard.html
+
 Thankyou !
 Happy Coding !!!
